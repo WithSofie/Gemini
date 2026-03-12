@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      2026-01-29
 // @description  automatically click "Thinking" in Gemini
-// @author       cflowe1357@gmail.com
+// @author       WithSofie
 // @match        https://gemini.google.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @grant        none
@@ -47,7 +47,7 @@
 
         setTimeout(() => {
             getSpanLabeled('New chat').addEventListener('click', clickThinkingTimeout(500));
-        }, 1500);
+        }, 1000);
     };
 
     if (document.readyState == 'complete') {
