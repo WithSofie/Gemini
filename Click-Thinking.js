@@ -12,16 +12,47 @@
 (function() {
     'use strict';
 
-    setTimeout(() => {
+    const $ = (selector) => document.querySelector(selector);
+
+    function getSpanLabeled(text) {
         const spans = document.querySelectorAll('span');
-        const matches = Array.from(spans).filter(span => span.textContent.includes('Fast'));
+        const matches = (
+            Array
+                .from(spans)
+                .filter(span => span.textContent.includes(text))
+        );
 
         false && console.log(`Found ${matches.length} matches:`, matches); // Optional: print
 
-        matches.some(el => {
-            el.click();
-            document.querySelector('#mat-menu-panel-5 > div > div > button:nth-child(4) > span > div > div > div > span.mode-title.gds-label-l').click();
-            return true;
-        });
-    }, 1000);
+        return matches.at(0)
+    }
+
+    function clickThinking() {
+        getSpanLabeled('Fast').click()
+        $( // click 'Thinking' option
+            '#mat-menu-panel-5 > div > div > button:nth-child(4) > span > div > div > div > span.mode-title.gds-label-l'
+        ).click();
+    }
+
+    function clickThinkingTimeout(timeout) {
+        return () => {
+            setTimeout(clickThinking, timeout);
+        }
+    }
+
+    const loaded = () => {
+        setTimeout(() => {
+            clickThinking();
+        }, 1000);
+
+        setTimeout(() => {
+            getSpanLabeled('New chat').addEventListener('click', clickThinkingTimeout(500));
+        }, 1500);
+    };
+
+    if (document.readyState == 'complete') {
+        loaded();
+    } else {
+        window.addEventListener('load', loaded);
+    }
 })();
